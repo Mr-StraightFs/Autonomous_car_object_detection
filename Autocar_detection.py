@@ -187,3 +187,11 @@ def yolo_eval(yolo_outputs, image_shape=(720, 1280), max_boxes=10, score_thresho
 
     return scores, boxes, classes
 
+# Defining Classes, Anchors and Image Shape
+class_names = read_classes("model_data/coco_classes.txt")
+anchors = read_anchors("model_data/yolo_anchors.txt")
+model_image_size = (608, 608) # Same as yolo_model input layer size
+
+# Loading a Pre-trained Mode
+yolo_model = load_model("model_data/", compile=False)
+
