@@ -58,3 +58,42 @@ def yolo_filter_boxes(boxes, box_confidence, box_class_probs, threshold=.6):
 
 
     return scores, boxes, classes
+
+
+def iou(box1, box2):
+    """Implement the intersection over union (IoU) between box1 and box2
+    
+    Arguments:
+    box1 -- first box, list object with coordinates (box1_x1, box1_y1, box1_x2, box_1_y2)
+    box2 -- second box, list object with coordinates (box2_x1, box2_y1, box2_x2, box2_y2)
+    """
+
+    (box1_x1, box1_y1, box1_x2, box1_y2) = box1
+    (box2_x1, box2_y1, box2_x2, box2_y2) = box2
+
+    # Assign variable names to coordinates for clarity
+    (box1_x1, box1_y1, box1_x2, box1_y2) = box1
+    (box2_x1, box2_y1, box2_x2, box2_y2) = box2
+
+    # Calculate the (yi1, xi1, yi2, xi2) coordinates of the intersection of box1 and box2. Then Calculate its Area.
+
+    xi1 = np.maximum(box1[0], box2[0])
+    yi1 = np.maximum(box1[1], box2[1])
+    xi2 = np.minimum(box1[2], box2[2])
+    yi2 = np.minimum(box1[3], box2[3])
+    inter_width = xi2 - xi1
+    inter_height = yi2 - yi1
+    # Case in which they don't intersec --> max(,0)
+    inter_area = max(inter_width, 0) * max(inter_height, 0)
+
+    # Calculate the Union area by using Formula: Union(A,B) = A + B - Inter(A,B)
+
+    box1_area = (box1[2] - box1[0]) * (box1[3] - box1[1])
+    box2_area = (box2[2] - box2[0]) * (box2[3] - box2[1])
+    union_area = box1_area + box2_area - inter_area
+
+    # compute the IoU
+
+    iou = float(inter_area) / float(union_area)
+
+    return iou
